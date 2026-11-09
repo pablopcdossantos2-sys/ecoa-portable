@@ -1,0 +1,295 @@
+"""Textos da interface em Português (Brasil), English e Español."""
+from __future__ import annotations
+
+LANGUAGES = {
+    "pt_BR": "Português (Brasil)",
+    "en": "English",
+    "es": "Español",
+}
+
+_DAY_NAMES = {
+    "pt_BR": ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"],
+    "en": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    "es": ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"],
+}
+
+_TEXT = {
+    "pt_BR": {
+        "subtitle": "Lembretes sonoros agendados",
+        "pause_all": "Pausar tudo",
+        "resume_all": "Retomar lembretes",
+        "new_reminder": "Novo lembrete",
+        "open_data": "Abrir pasta de dados",
+        "theme": "Tema",
+        "language": "Idioma",
+        "close_hint": "Feche a janela para mantê-la na bandeja (quando disponível).",
+        "empty": "Nenhum lembrete cadastrado. Clique em “Novo lembrete” para começar.",
+        "active": "Ativo",
+        "test": "Testar",
+        "stop": "Parar",
+        "edit": "Editar",
+        "delete": "Excluir",
+        "mode_interval": "Intervalo",
+        "mode_loop": "Loop contínuo",
+        "audio_missing": "O arquivo de áudio não foi encontrado.",
+        "delete_confirm": "Excluir “{name}”?",
+        "editor_new": "Novo lembrete",
+        "editor_edit": "Editar lembrete",
+        "name": "Nome",
+        "audio": "Áudio",
+        "no_audio": "Nenhum áudio escolhido",
+        "choose": "Escolher",
+        "mode": "Modo",
+        "interval": "Intervalo",
+        "minutes": "Minutos",
+        "hours": "Horas",
+        "repeats": "Repetições por disparo",
+        "gap": "Pausa entre repetições (s)",
+        "start": "Horário inicial",
+        "end": "Horário final",
+        "days": "Dias da semana",
+        "volume": "Volume (%)",
+        "all_day": "Dia todo (24 h)",
+        "cancel": "Cancelar",
+        "save": "Salvar",
+        "choose_audio_title": "Escolher arquivo de áudio",
+        "audio_files": "Arquivos de áudio",
+        "all_files": "Todos os arquivos",
+        "warning": "Atenção",
+        "error": "Erro",
+        "choose_valid_audio": "Escolha um arquivo de áudio válido.",
+        "valid_numbers": "Informe números válidos para intervalo, repetições e pausa.",
+        "interval_range": "O intervalo está fora do limite permitido.",
+        "repeats_range": "As repetições devem estar entre 1 e 20 e a pausa entre 0 e 3600 segundos.",
+        "valid_times": "Informe horários válidos e diferentes, ou marque Dia todo.",
+        "choose_day": "Selecione ao menos um dia da semana.",
+        "copy_audio_error": "Não foi possível copiar o áudio: {error}",
+        "save_error": "Não foi possível salvar as configurações:\n{error}",
+        "theme_system": "Sistema",
+        "theme_dark": "Escuro",
+        "theme_light": "Claro",
+        "tray_open": "Abrir Ecoa",
+        "tray_resume": "Retomar lembretes",
+        "tray_pause": "Pausar lembretes",
+        "tray_quit": "Sair",
+        "tray_title": "Ecoa - lembretes sonoros",
+        "tray_active": "ativo",
+        "tray_paused": "pausado",
+        "tray_notice": "O Ecoa continua na bandeja. Use o menu do ícone para sair.",
+        "status_disabled": "Desativado",
+        "status_audio_missing": "Arquivo de áudio não encontrado",
+        "status_paused": "Tudo pausado",
+        "status_no_days": "Nenhum dia selecionado",
+        "status_loop_playing": "Tocando em loop até {end}",
+        "status_loop_waiting": "Em loop até {end}",
+        "status_starts": "Começa {when}",
+        "status_no_runs": "Sem execuções",
+        "status_playing": "Tocando agora",
+        "status_next": "Próxima execução {when}",
+        "status_no_scheduled": "Sem execuções programadas",
+        "today": "hoje às {time}",
+        "tomorrow": "amanhã às {time}",
+        "weekday_at": "{day} às {time}",
+    },
+    "en": {
+        "subtitle": "Scheduled audio reminders",
+        "pause_all": "Pause All",
+        "resume_all": "Resume Reminders",
+        "new_reminder": "New Reminder",
+        "open_data": "Open Data Folder",
+        "theme": "Theme",
+        "language": "Language",
+        "close_hint": "Close the window to keep Ecoa running in the tray (when available).",
+        "empty": "No reminders yet. Select “New Reminder” to get started.",
+        "active": "Active",
+        "test": "Test",
+        "stop": "Stop",
+        "edit": "Edit",
+        "delete": "Delete",
+        "mode_interval": "Interval",
+        "mode_loop": "Continuous Loop",
+        "audio_missing": "The audio file could not be found.",
+        "delete_confirm": "Delete “{name}”?",
+        "editor_new": "New Reminder",
+        "editor_edit": "Edit Reminder",
+        "name": "Name",
+        "audio": "Audio",
+        "no_audio": "No audio selected",
+        "choose": "Browse",
+        "mode": "Mode",
+        "interval": "Interval",
+        "minutes": "Minutes",
+        "hours": "Hours",
+        "repeats": "Repeats per Trigger",
+        "gap": "Pause Between Repeats (s)",
+        "start": "Start Time",
+        "end": "End Time",
+        "days": "Days of the Week",
+        "volume": "Volume (%)",
+        "all_day": "All Day (24 h)",
+        "cancel": "Cancel",
+        "save": "Save",
+        "choose_audio_title": "Choose an Audio File",
+        "audio_files": "Audio Files",
+        "all_files": "All Files",
+        "warning": "Warning",
+        "error": "Error",
+        "choose_valid_audio": "Choose a valid audio file.",
+        "valid_numbers": "Enter valid numbers for the interval, repeats and pause.",
+        "interval_range": "The interval is outside the allowed range.",
+        "repeats_range": "Repeats must be 1–20 and the pause must be 0–3600 seconds.",
+        "valid_times": "Enter valid, different times, or select All Day.",
+        "choose_day": "Select at least one day of the week.",
+        "copy_audio_error": "Could not copy the audio file: {error}",
+        "save_error": "Could not save the settings:\n{error}",
+        "theme_system": "System",
+        "theme_dark": "Dark",
+        "theme_light": "Light",
+        "tray_open": "Open Ecoa",
+        "tray_resume": "Resume Reminders",
+        "tray_pause": "Pause Reminders",
+        "tray_quit": "Quit",
+        "tray_title": "Ecoa - audio reminders",
+        "tray_active": "active",
+        "tray_paused": "paused",
+        "tray_notice": "Ecoa is still running in the system tray. Use the icon menu to quit.",
+        "status_disabled": "Disabled",
+        "status_audio_missing": "Audio file not found",
+        "status_paused": "All reminders are paused",
+        "status_no_days": "No days selected",
+        "status_loop_playing": "Playing in a loop until {end}",
+        "status_loop_waiting": "Looping until {end}",
+        "status_starts": "Starts {when}",
+        "status_no_runs": "No upcoming runs",
+        "status_playing": "Playing now",
+        "status_next": "Next run {when}",
+        "status_no_scheduled": "No scheduled runs",
+        "today": "today at {time}",
+        "tomorrow": "tomorrow at {time}",
+        "weekday_at": "{day} at {time}",
+    },
+    "es": {
+        "subtitle": "Recordatorios de audio programados",
+        "pause_all": "Pausar Todo",
+        "resume_all": "Reanudar Recordatorios",
+        "new_reminder": "Nuevo Recordatorio",
+        "open_data": "Abrir Carpeta de Datos",
+        "theme": "Tema",
+        "language": "Idioma",
+        "close_hint": "Cierra la ventana para mantener Ecoa en la bandeja (cuando esté disponible).",
+        "empty": "Todavía no hay recordatorios. Selecciona “Nuevo Recordatorio” para comenzar.",
+        "active": "Activo",
+        "test": "Probar",
+        "stop": "Detener",
+        "edit": "Editar",
+        "delete": "Eliminar",
+        "mode_interval": "Intervalo",
+        "mode_loop": "Bucle Continuo",
+        "audio_missing": "No se encontró el archivo de audio.",
+        "delete_confirm": "¿Eliminar “{name}”?",
+        "editor_new": "Nuevo Recordatorio",
+        "editor_edit": "Editar Recordatorio",
+        "name": "Nombre",
+        "audio": "Audio",
+        "no_audio": "No se ha seleccionado audio",
+        "choose": "Elegir",
+        "mode": "Modo",
+        "interval": "Intervalo",
+        "minutes": "Minutos",
+        "hours": "Horas",
+        "repeats": "Repeticiones por Disparo",
+        "gap": "Pausa entre Repeticiones (s)",
+        "start": "Hora de Inicio",
+        "end": "Hora de Fin",
+        "days": "Días de la Semana",
+        "volume": "Volumen (%)",
+        "all_day": "Todo el Día (24 h)",
+        "cancel": "Cancelar",
+        "save": "Guardar",
+        "choose_audio_title": "Elegir un Archivo de Audio",
+        "audio_files": "Archivos de Audio",
+        "all_files": "Todos los Archivos",
+        "warning": "Atención",
+        "error": "Error",
+        "choose_valid_audio": "Elige un archivo de audio válido.",
+        "valid_numbers": "Introduce números válidos para el intervalo, las repeticiones y la pausa.",
+        "interval_range": "El intervalo está fuera del rango permitido.",
+        "repeats_range": "Las repeticiones deben ser de 1 a 20 y la pausa de 0 a 3600 segundos.",
+        "valid_times": "Introduce horas válidas y diferentes, o selecciona Todo el Día.",
+        "choose_day": "Selecciona al menos un día de la semana.",
+        "copy_audio_error": "No se pudo copiar el audio: {error}",
+        "save_error": "No se pudo guardar la configuración:\n{error}",
+        "theme_system": "Sistema",
+        "theme_dark": "Oscuro",
+        "theme_light": "Claro",
+        "tray_open": "Abrir Ecoa",
+        "tray_resume": "Reanudar Recordatorios",
+        "tray_pause": "Pausar Recordatorios",
+        "tray_quit": "Salir",
+        "tray_title": "Ecoa - recordatorios de audio",
+        "tray_active": "activo",
+        "tray_paused": "en pausa",
+        "tray_notice": "Ecoa sigue en la bandeja. Usa el menú del icono para salir.",
+        "status_disabled": "Desactivado",
+        "status_audio_missing": "No se encontró el archivo de audio",
+        "status_paused": "Todos los recordatorios están en pausa",
+        "status_no_days": "No se ha seleccionado ningún día",
+        "status_loop_playing": "Reproduciendo en bucle hasta las {end}",
+        "status_loop_waiting": "En bucle hasta las {end}",
+        "status_starts": "Comienza {when}",
+        "status_no_runs": "No hay próximas ejecuciones",
+        "status_playing": "Reproduciendo ahora",
+        "status_next": "Próxima ejecución {when}",
+        "status_no_scheduled": "No hay ejecuciones programadas",
+        "today": "hoy a las {time}",
+        "tomorrow": "mañana a las {time}",
+        "weekday_at": "{day} a las {time}",
+    },
+}
+
+def normalize_language(value: str | None) -> str:
+    return value if value in LANGUAGES else "pt_BR"
+
+
+def tr(language: str | None, key: str, **values) -> str:
+    language = normalize_language(language)
+    template = _TEXT[language].get(key, _TEXT["pt_BR"].get(key, key))
+    return template.format(**values) if values else template
+
+
+def day_names(language: str | None = "pt_BR") -> list[str]:
+    return list(_DAY_NAMES[normalize_language(language)])
+
+
+def language_label(language: str | None) -> str:
+    return LANGUAGES[normalize_language(language)]
+
+
+def language_from_label(label: str) -> str:
+    return next((code for code, name in LANGUAGES.items() if name == label), "pt_BR")
+
+
+THEME_KEYS = {
+    "pt_BR": {"system": "theme_system", "dark": "theme_dark", "light": "theme_light"},
+    "en": {"system": "theme_system", "dark": "theme_dark", "light": "theme_light"},
+    "es": {"system": "theme_system", "dark": "theme_dark", "light": "theme_light"},
+}
+
+
+def theme_options(language: str | None) -> list[str]:
+    language = normalize_language(language)
+    return [tr(language, THEME_KEYS[language][key]) for key in ("system", "dark", "light")]
+
+
+def theme_from_label(language: str | None, label: str) -> str:
+    language = normalize_language(language)
+    for key in ("system", "dark", "light"):
+        if tr(language, THEME_KEYS[language][key]) == label:
+            return key
+    return "system"
+
+
+def theme_label(language: str | None, value: str) -> str:
+    language = normalize_language(language)
+    key = value if value in ("system", "dark", "light") else "system"
+    return tr(language, THEME_KEYS[language][key])

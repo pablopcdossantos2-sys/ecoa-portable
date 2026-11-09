@@ -54,7 +54,8 @@ jobs:
         run: >-
           python -m PyInstaller --noconfirm --clean --windowed --onefile
           --name Ecoa --icon assets/icon.ico
-          --collect-all customtkinter --hidden-import pystray._win32 main.py
+          --collect-all customtkinter --collect-all imageio_ffmpeg
+          --hidden-import pystray._win32 main.py
 
       - name: Verify executable
         shell: pwsh

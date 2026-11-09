@@ -7,10 +7,15 @@ interrompido. O mixer é iniciado sob demanda e reiniciado se o dispositivo de
 """
 from __future__ import annotations
 
+import hashlib
 import logging
 import os
+import subprocess
 import threading
 import time
+from pathlib import Path
+
+from . import paths
 
 os.environ.setdefault("PYGAME_HIDE_SUPPORT_PROMPT", "1")
 
@@ -58,13 +63,60 @@ class Player:
             except Exception:  # noqa: BLE001
                 pass
 
+    def _prepare_audio_path(self, path: str) -> str:
+        """Converte M4A/AAC para WAV PCM uma vez e reutiliza o cache local.
+
+        O pygame-ce/SDL_mixer não lista M4A entre os formatos suportados por
+        mixer.Sound. O FFmpeg incluído em imageio-ffmpeg decodifica o arquivo;
+        o motor continua reproduzindo o WAV convertido pelo mixer.
+        """
+        source = Path(path)
+        if source.suffix.lower() != ".m4a":
+            return str(source)
+
+        from imageio_ffmpeg import get_ffmpeg_exe
+
+        digest = hashlib.sha256()
+        with source.open("rb") as stream:
+            for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+                digest.update(chunk)
+        key = digest.hexdigest()
+        cache_dir = paths.data_dir() / "converted_audio"
+        cache_dir.mkdir(parents=True, exist_ok=True)
+        target = cache_dir / f"{key}.wav"
+        if target.is_file() and target.stat().st_size > 44:
+            return str(target)
+
+        temporary = cache_dir / f"{key}.partial.wav"
+        try:
+            command = [
+                get_ffmpeg_exe(), "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
+                "-i", str(source), "-vn", "-ac", "2", "-ar", "44100",
+                "-c:a", "pcm_s16le", str(temporary),
+            ]
+            completed = subprocess.run(
+                command, check=False, capture_output=True, text=True, timeout=180
+            )
+            if completed.returncode != 0 or not temporary.is_file() or temporary.stat().st_size <= 44:
+                detail = (completed.stderr or "").strip()
+                raise RuntimeError(detail or "FFmpeg não conseguiu decodificar o arquivo M4A.")
+            os.replace(temporary, target)
+            log.info("Áudio M4A convertido para cache WAV: %s", source.name)
+            return str(target)
+        finally:
+            try:
+                temporary.unlink(missing_ok=True)
+            except OSError:
+                pass
+
     def _load(self, pygame, path: str):
-        mtime = os.path.getmtime(path)
-        cached = self._sounds.get(path)
+        playable_path = self._prepare_audio_path(path)
+        mtime = os.path.getmtime(playable_path)
+        cached = self._sounds.get(playable_path)
         if cached and cached[0] == mtime:
             return cached[1]
-        sound = pygame.mixer.Sound(path)
-        self._sounds[path] = (mtime, sound)
+        sound = pygame.mixer.Sound(playable_path)
+        self._sounds[playable_path] = (mtime, sound)
         return sound
 
     def clear_cache(self) -> None:

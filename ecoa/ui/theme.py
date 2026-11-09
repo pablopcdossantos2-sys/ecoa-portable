@@ -1,8 +1,8 @@
 """Identidade visual do Ecoa.
 
-Ideia: "sonar". Barra lateral sempre em azul-petróleo profundo, conteúdo claro ou
-escuro conforme o sistema, um único acento verde-azulado (a onda do eco) e âmbar
-reservado para o que está tocando agora. Todas as cores são pares (claro, escuro).
+Ideia: "sonar". Uma única janela, sem barra lateral, com superfícies claras ou
+escuras conforme o tema, um acento verde-azulado (a onda do eco) e âmbar reservado
+para o que está tocando agora. Todas as cores são pares (claro, escuro).
 """
 from __future__ import annotations
 
@@ -34,13 +34,6 @@ LIVE = ("#C47A06", "#F2A93B")      # tocando agora
 DANGER = ("#C23B33", "#EE6A62")
 DANGER_SOFT = ("#F8E3E1", "#3A1D1D")
 IDLE = ("#8497A0", "#667B86")
-
-# Barra lateral (igual nos dois modos)
-SIDEBAR = ("#0F2530", "#09121A")
-SIDEBAR_TEXT = "#E7F0F2"
-SIDEBAR_MUTED = "#8FA9B5"
-SIDEBAR_ACTIVE = ("#1B4350", "#15303B")
-SIDEBAR_HOVER = ("#173845", "#112832")
 
 STATUS_COLORS = {
     "playing": LIVE,

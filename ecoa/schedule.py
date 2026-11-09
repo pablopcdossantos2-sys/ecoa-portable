@@ -15,6 +15,8 @@ from __future__ import annotations
 from datetime import datetime, time, timedelta
 from typing import Iterator
 
+from .i18n import day_names, tr
+
 DAY_LABELS = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"]
 
 
@@ -111,14 +113,14 @@ def next_trigger(r, after: datetime) -> datetime | None:
 # ---------------------------------------------------------------- textos
 
 
-def fmt_when(dt: datetime, now: datetime) -> str:
+def fmt_when(dt: datetime, now: datetime, language: str = "pt_BR") -> str:
     hhmm = dt.strftime("%H:%M")
     delta = (dt.date() - now.date()).days
     if delta == 0:
-        return f"hoje às {hhmm}"
+        return tr(language, "today", time=hhmm)
     if delta == 1:
-        return f"amanhã às {hhmm}"
-    return f"{DAY_LABELS[dt.weekday()].lower()} às {hhmm}"
+        return tr(language, "tomorrow", time=hhmm)
+    return tr(language, "weekday_at", day=day_names(language)[dt.weekday()], time=hhmm)
 
 
 def describe_days(days) -> str:

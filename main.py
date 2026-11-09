@@ -74,6 +74,7 @@ def main(argv=None) -> int:
         on_toggle_pause=lambda: ui_queue.put(app.toggle_pause),
         on_quit=lambda: ui_queue.put(app.quit_app),
         is_paused=lambda: engine.paused,
+        get_language=lambda: store.settings.language,
     )
     app.tray = tray
     tray.start()

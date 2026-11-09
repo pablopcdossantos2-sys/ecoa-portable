@@ -13,13 +13,14 @@ from dataclasses import asdict, dataclass, field, fields
 from pathlib import Path
 
 from . import paths, schedule
+from .i18n import normalize_language
 
 log = logging.getLogger("ecoa.models")
 
 MODE_INTERVAL = "interval"
 MODE_LOOP = "loop"
 ALL_DAYS = [0, 1, 2, 3, 4, 5, 6]
-AUDIO_EXTENSIONS = (".mp3", ".wav", ".ogg", ".flac")
+AUDIO_EXTENSIONS = (".mp3", ".wav", ".ogg", ".flac", ".m4a")
 CONFIG_VERSION = 1
 
 
@@ -101,6 +102,7 @@ class Settings:
     close_to_tray: bool = True         # o X da janela manda para a bandeja
     copy_audio: bool = True            # copia os áudios para dados/audios
     theme: str = "system"              # system | dark | light
+    language: str = "pt_BR"            # pt_BR | en | es
 
     @classmethod
     def from_dict(cls, data: dict) -> "Settings":
@@ -108,6 +110,7 @@ class Settings:
         s = cls(**{k: v for k, v in data.items() if k in known})
         if s.theme not in ("system", "dark", "light"):
             s.theme = "system"
+        s.language = normalize_language(s.language)
         return s
 
 

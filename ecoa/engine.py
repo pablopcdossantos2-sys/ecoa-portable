@@ -7,6 +7,7 @@ from datetime import datetime
 
 from . import schedule
 from .models import MODE_LOOP, Reminder, Store
+from .i18n import tr
 from .player import Player
 
 log = logging.getLogger("ecoa.engine")
@@ -73,32 +74,35 @@ class Engine:
 
     # ------------------------------------------------------------ status UI
     def status(self, r: Reminder, now: datetime | None = None) -> tuple[str, str]:
-        """Texto e tipo ('playing', 'waiting', 'idle', 'off', 'error') para a interface."""
+        """Texto traduzido e tipo de status para a interface."""
         now = now or datetime.now()
+        language = self.store.settings.language
         if not r.enabled:
-            return "Desativado", "off"
+            return tr(language, "status_disabled"), "off"
         if r.audio_file() is None:
-            return "Arquivo de áudio não encontrado", "error"
+            return tr(language, "status_audio_missing"), "error"
         if self.paused:
-            return "Tudo pausado", "off"
+            return tr(language, "status_paused"), "off"
         if not r.days:
-            return "Nenhum dia selecionado", "off"
+            return tr(language, "status_no_days"), "off"
         playing = self.player.is_playing(r.id)
         if r.mode == MODE_LOOP:
             window = schedule.active_window(r, now)
             if window:
-                prefix = "Tocando em loop" if playing else "Em loop"
-                return f"{prefix} até {window[1]:%H:%M}", "playing" if playing else "waiting"
+                key = "status_loop_playing" if playing else "status_loop_waiting"
+                return tr(language, key, end=window[1].strftime("%H:%M")), "playing" if playing else "waiting"
             nxt = schedule.next_window_start(r, now)
-            return (f"Começa {schedule.fmt_when(nxt, now)}", "idle") if nxt else ("Sem execuções", "off")
+            return (tr(language, "status_starts", when=schedule.fmt_when(nxt, now, language)), "idle") if nxt else (
+                tr(language, "status_no_runs"), "off"
+            )
         if playing:
-            return "Tocando agora", "playing"
+            return tr(language, "status_playing"), "playing"
         with self._lock:
             state = self._states.get(r.id)
             next_run = state.next_run if state else None
         if next_run:
-            return f"Próxima execução {schedule.fmt_when(next_run, now)}", "idle"
-        return "Sem execuções programadas", "off"
+            return tr(language, "status_next", when=schedule.fmt_when(next_run, now, language)), "idle"
+        return tr(language, "status_no_scheduled"), "off"
 
     # ------------------------------------------------------------- loop
     def _run(self) -> None:

@@ -15,8 +15,10 @@ Aplicativo **portátil para Windows**, feito em Python, que toca mensagens de á
 - **Inicia com o Windows** (sem administrador) e **começa escondido na bandeja**.
 - **Portátil**: configurações, áudios e log ficam na pasta `dados`, ao lado do programa.
 - **Instância única**: abrir o app de novo só traz a janela que já está aberta.
-- Interface moderna (CustomTkinter) com tema claro, escuro ou automático.
-- Formatos de áudio: **MP3, WAV, OGG e FLAC**.
+- Interface moderna (CustomTkinter), em uma única janela sem barra lateral.
+- Idiomas da interface: **Português (Brasil), English e Español**. O idioma escolhido fica salvo nas configurações.
+- Tema **Sistema**, **Escuro/Dark** ou **Claro/Light**, conforme o idioma selecionado.
+- Formatos de áudio: **MP3, WAV, OGG, FLAC e M4A**.
 
 ## Como as regras funcionam
 
@@ -44,7 +46,9 @@ Exemplos:
 2. Na versão desejada, baixe o arquivo `Ecoa.exe`.
 3. Execute-o no Windows 10 ou 11. Na primeira execução, o Ecoa cria a pasta `dados` ao lado do executável (ou em `%APPDATA%\Ecoa\dados`, se a pasta não permitir gravação).
 
-O executável é compilado para Windows x64 e não exige que o Python esteja instalado. Como o programa não é assinado digitalmente, o Windows SmartScreen pode exibir um aviso na primeira execução.
+O executável é compilado para Windows x64 e não exige que o Python esteja instalado. Para decodificar arquivos **M4A/AAC**, o Ecoa inclui o FFmpeg por meio do pacote imageio-ffmpeg; na primeira reprodução, o áudio é convertido para WAV e armazenado em cache na pasta `dados/converted_audio`. Por isso, o executável fica maior do que uma compilação sem suporte a M4A.
+
+Como o programa não é assinado digitalmente, o Windows SmartScreen pode exibir um aviso na primeira execução.
 
 ## Requisitos
 

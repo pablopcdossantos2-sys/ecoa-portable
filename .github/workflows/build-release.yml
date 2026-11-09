@@ -1,0 +1,111 @@
+name: Build Windows executable and publish release
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      publish_release:
+        description: Publish or update the release for the version in ecoa/__init__.py
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ecoa-build-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Test and build for Windows
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-build.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt -r requirements-build.txt
+
+      - name: Run test suite
+        run: python -m unittest discover -s tests -v
+
+      - name: Generate application icon
+        run: python tools/make_icon.py
+
+      - name: Build portable executable
+        run: >-
+          python -m PyInstaller --noconfirm --clean --windowed --onefile
+          --name Ecoa --icon assets/icon.ico
+          --collect-all customtkinter --hidden-import pystray._win32 main.py
+
+      - name: Verify executable
+        shell: pwsh
+        run: |
+          if (-not (Test-Path "dist/Ecoa.exe")) {
+            throw "PyInstaller did not produce dist/Ecoa.exe"
+          }
+          Get-Item "dist/Ecoa.exe" | Select-Object Name, Length
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: Ecoa-Windows-${{ github.run_number }}
+          path: dist/Ecoa.exe
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Publish release
+        if: startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && inputs.publish_release)
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT_NAME: ${{ github.event_name }}
+          REF_TYPE: ${{ github.ref_type }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          if ($env:REF_TYPE -eq "tag") {
+            $tag = $env:REF_NAME
+          } else {
+            $version = python -c "from ecoa import __version__; print(__version__)"
+            $tag = "v$version"
+          }
+
+          gh release view $tag --json tagName *> $null
+          $releaseExists = ($LASTEXITCODE -eq 0)
+
+          # A push to main creates a release only when that version has not
+          # been published yet. Later commits do not replace the release asset.
+          if ($env:EVENT_NAME -eq "push" -and $env:REF_TYPE -eq "branch" -and $releaseExists) {
+            Write-Host "Release $tag already exists; skipping publication on this ordinary push."
+            exit 0
+          }
+
+          if ($releaseExists) {
+            gh release upload $tag dist/Ecoa.exe --clobber
+          } else {
+            $ghArgs = @("release", "create", $tag, "dist/Ecoa.exe", "--title", "Ecoa $tag", "--generate-notes")
+            if ($env:REF_TYPE -eq "tag") {
+              $ghArgs += "--verify-tag"
+            } else {
+              $ghArgs += @("--target", $env:GITHUB_SHA)
+            }
+            gh @ghArgs
+          }

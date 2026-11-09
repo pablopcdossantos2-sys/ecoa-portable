@@ -120,7 +120,10 @@ def fmt_when(dt: datetime, now: datetime, language: str = "pt_BR") -> str:
         return tr(language, "today", time=hhmm)
     if delta == 1:
         return tr(language, "tomorrow", time=hhmm)
-    return tr(language, "weekday_at", day=day_names(language)[dt.weekday()], time=hhmm)
+    day = day_names(language)[dt.weekday()]
+    if language in ("pt_BR", "es"):
+        day = day.lower()
+    return tr(language, "weekday_at", day=day, time=hhmm)
 
 
 def describe_days(days) -> str:
